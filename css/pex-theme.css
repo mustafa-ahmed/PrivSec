@@ -5244,3 +5244,7 @@ ol {
 li {
   display: list-item !important;
 }
+
+.fire-wall-height {
+  height: 175px;
+}

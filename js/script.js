@@ -12,94 +12,94 @@ initMap = false;
 
     // Page loader
     $('body').addClass('loader-loading');
-    var showPage = function(){
+    var showPage = function () {
         $('body')
             .removeClass('loader-loading')
             .off('.pageLoader')
-        ;
+            ;
         $(window).trigger('resize');
     };
     $(window).on('load.pageLoader', showPage);
     //force page show if it's loading too long
     setTimeout(showPage, 60000); // 60000 ~ 1 minute
-    
+
     //Initiate Pentix scripts for all elements within body
     $('body').pexInit();
 
-    $('.menu-items .toggle-icon').on('click', function(){
+    $('.menu-items .toggle-icon').on('click', function () {
         $(this).closest('li').toggleClass('active');
     });
 
-    $('.accordion-item .accordion-title').on('click', function(){
+    $('.accordion-item .accordion-title').on('click', function () {
         $(this).closest('.accordion-item').toggleClass('active');
     });
 
     // Trigger resize for parallax blocks
-    $('[data-parallax]').each(function(i, el){
+    $('[data-parallax]').each(function (i, el) {
         new Waypoint({
             element: el,
-            handler: function() {
+            handler: function () {
                 $(window).resize();
             },
-            offset : '100%'
+            offset: '100%'
         });
     });
 
     // FlexSlider
-    $('.flexslider').each(function(i, el){
+    $('.flexslider').each(function (i, el) {
         var $slider = $(el),
             $directions = $slider.find(".flex-custom-navigation a"),
             $controls = $slider.find(".flex-custom-controls"),
             options = {
-                animation : "slide",
-                selector : ".slides > .slide",
+                animation: "slide",
+                selector: ".slides > .slide",
                 controlsContainer: $controls,
                 customDirectionNav: $directions,
-                controlNav : !!$controls.length,
-                directionNav : !!$directions.length,
-                video : true
+                controlNav: !!$controls.length,
+                directionNav: !!$directions.length,
+                video: true
             }
-        ;
+            ;
         $slider.flexslider(options);
     });
 
     // Owl Carousel 2
-    $('.owl-carousel').each(function(i, el){
+    $('.owl-carousel').each(function (i, el) {
         var $slider = $(el),
             data = $slider.data(),
             options = {
-                nav : !!data.owlNav,
-                dots : !!data.owlDots,
-                margin : data.owlMargin || 0,
-                autoplay : data.hasOwnProperty('autoplay') ? data.autoplay : true,
-                autoplayHoverPause : true,
-                center : !!data.owlCenter,
-                items : data.owlItems || 3,
-                loop : data.hasOwnProperty('owlLoop') ? !!data.owlLoop : true,
+                nav: !!data.owlNav,
+                dots: !!data.owlDots,
+                margin: data.owlMargin || 0,
+                autoplay: data.hasOwnProperty('autoplay') ? data.autoplay : true,
+                autoplayHoverPause: true,
+                center: !!data.owlCenter,
+                items: data.owlItems || 3,
+                loop: data.hasOwnProperty('owlLoop') ? !!data.owlLoop : true,
                 responsive: {
-                    0 : {
-                        items : 1
+                    0: {
+                        items: 1
                     },
-                    768:{
-                        items : 2
+                    768: {
+                        items: 2
                     },
-                    1200 : {
-                        items : 3
+                    1200: {
+                        items: 3
                     }
                 }
             }
-        ;
-        if( data.owlResponsive ){
+            ;
+        if (data.owlResponsive) {
             var values = data.owlResponsive.split(';'),
                 responsive = {
-                    0 : 1
+                    0: 1
                 },
                 sizes = [0, 768, 992, 1200]
-            ;
+                ;
             for (var ind = 0; ind < sizes.length && ind < values.length; ind++) {
-                if( values[ind] ){
+                if (values[ind]) {
                     responsive[sizes[ind]] = {
-                        items : parseInt(values[ind], 10)
+                        items: parseInt(values[ind], 10)
                     };
                 }
             }
@@ -109,92 +109,100 @@ initMap = false;
     });
 
     // Waypoint Counters
-    $('[data-waypoint-counter]').each(function(i, el){
+    $('[data-waypoint-counter]').each(function (i, el) {
         $(el).waypoint({
-            handler : function() {
-                $(el).prop('CounterValue',0).animate({
+            handler: function () {
+                $(el).prop('CounterValue', 0).animate({
                     CounterValue: $(el).data('waypointCounter')
                 }, {
-                    duration: 2000,
-                    step : function (now) {
-                        $(this).text(Math.ceil(now));
-                    }
-                });
+                        duration: 2000,
+                        step: function (now) {
+                            $(this).text(Math.ceil(now));
+                        }
+                    });
                 this.destroy();
             },
-            offset : 'bottom-in-view'
+            offset: 'bottom-in-view'
         });
     });
 
     // Menu stick
-    $('.stick-menu').each(function(i, el){
+    $('.stick-menu').each(function (i, el) {
         var waypointHeader, waypointMenu;
         waypointHeader = new Waypoint({
-            element : $(el).closest('.header')[0],
-            handler : function() {
-                if( $(window).scrollTop() <= this.element.clientHeight ){
+            element: $(el).closest('.header')[0],
+            handler: function () {
+                if ($(window).scrollTop() <= this.element.clientHeight) {
                     $(el).closest('.header').removeClass('sticked-menu');
                     $(window).resize();
                     this.disable();
                     waypointMenu.enable();
                 }
             },
-            enabled : false,
-            offset : function() {
+            enabled: false,
+            offset: function () {
                 return -this.element.clientHeight - 1;
             }
         });
         waypointMenu = new Waypoint({
-            element : el,
-            handler : function() {
+            element: el,
+            handler: function () {
                 var body = document.body,
                     html = document.documentElement,
-                    docHeight = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight ),
+                    docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight),
                     elHeight = this.element.clientHeight,
                     windowHeight = $(window).height()
-                ;
-                if( docHeight > (windowHeight + 2*elHeight) ){
+                    ;
+                if (docHeight > (windowHeight + 2 * elHeight)) {
                     $(el).closest('.header').addClass('sticked-menu');
                     $(window).resize();
                     this.disable();
                     waypointHeader.enable();
                 }
             },
-            offset : -2
+            offset: -2
         });
     });
 
+    $('#showMoreFireWall').on('click', function () {
+        $(this).closest('.item-content').find('.item-text.fire-wall-height').css({
+            'height': 'auto',
+            'transition': 'height 0.3s ease'
+        });
+        $(this).hide();
+    })
+
     // File field
-    $('.field-file-control').each(function(i, el){
+    $('.field-file-control').each(function (i, el) {
         var $el = $(el);
         // show file name in text input
-        $el.on('change.fileField', function(){
-                var $wrap = $(this).closest('.field-wrap'),
-                    $old = $wrap.find('.field-file-old')
+        $el.on('change.fileField', function () {
+            var $wrap = $(this).closest('.field-wrap'),
+                $old = $wrap.find('.field-file-old')
                 ;
-                $wrap.find('.field-control').val(!this.value && $old.length ? $old.attr('data-value') || $old.val() : this.value);
-            })
+            $wrap.find('.field-control').val(!this.value && $old.length ? $old.attr('data-value') || $old.val() : this.value);
+        })
             .triggerHandler('change.fileField')
-        ;
+            ;
 
         var $form = $el.closest('form');
-        if( $form && $form.length ){
+        if ($form && $form.length) {
             $form
-                .data('fileFields', ($form.data('fileFields') || $([])).add($el) )
+                .data('fileFields', ($form.data('fileFields') || $([])).add($el))
                 .off('.fileFields')
-                .on('reset.fileFields', function(){
+                .on('reset.fileFields', function () {
                     var $el = $(this);
-                    setTimeout(function(){
-                        $el.data('fileFields').each(function(i, field){
+                    setTimeout(function () {
+                        $el.data('fileFields').each(function (i, field) {
                             $(field).triggerHandler('change.fileField');
                         });
                     });
                 })
-            ;
+                ;
         }
 
         // add on click events to show file selection window
-        $el.closest('.field-wrap').find('.field-control, .field-file-btn').on('click', function(e){
+        $el.closest('.field-wrap').find('.field-control, .field-file-btn').on('click', function (e) {
             e.preventDefault();
             $el.trigger('click');
         });
@@ -205,24 +213,24 @@ initMap = false;
         */
         var reader = false,
             $root = $(el).closest('.field-type-image')
-        ;
-        if( !($root.length  && typeof(FileReader) !== 'undefined') ){
+            ;
+        if (!($root.length && typeof (FileReader) !== 'undefined')) {
             return;
         }
 
-        if( $root.find('.file-preview-image img') ){
+        if ($root.find('.file-preview-image img')) {
             $root.addClass('has-file');
         }
 
         // add on click events to show file selection window
-        $root.find('.file-preview').on('click', function(e){
+        $root.find('.file-preview').on('click', function (e) {
             e.preventDefault();
             $el.trigger('click');
         });
 
         reader = new FileReader();
-        
-        reader.onloadstart = function(){
+
+        reader.onloadstart = function () {
             $root.removeClass('has-file'); //Hide old image
         };
         reader.onload = function (e) {
@@ -232,74 +240,74 @@ initMap = false;
                 .html('<img src="' + e.target.result + '" alt="" />');
             $root.addClass('has-file');
         };
-        
+
         // Set change event, unset any previous
-        $el.on('change.imageField', function(){
+        $el.on('change.imageField', function () {
             var files = this.files ? this.files : this.currentTarget.files;
-            if( files.length ){
-                reader.readAsDataURL( files[0] );
-            }else{
+            if (files.length) {
+                reader.readAsDataURL(files[0]);
+            } else {
                 $root
                     .removeClass('has-file')
                     .find('.file-preview-image').empty()
-                ;
+                    ;
             }
-            
+
         });
 
-        if( $form && $form.length ){
+        if ($form && $form.length) {
             $form
-                .data('imageFields', ($form.data('imageFields') || $([])).add($el) )
+                .data('imageFields', ($form.data('imageFields') || $([])).add($el))
                 .off('.imageFields')
-                .on('reset.imageFields', function(){
+                .on('reset.imageFields', function () {
                     var $formEl = $(this);
-                    setTimeout(function(){
-                        $formEl.data('imageFields').each(function(i, field){
+                    setTimeout(function () {
+                        $formEl.data('imageFields').each(function (i, field) {
                             $(field).find('input[type="file"]').triggerHandler('change.imageField');
                         });
                     });
                 })
-            ;
+                ;
         }
     });
 
     // Inview showup
-    $('[data-inview-showup]').each(function(){
+    $('[data-inview-showup]').each(function () {
         var $el = $(this);
         $el.addClass('inview-showup');
         new Waypoint({
             element: $el,
-            handler: function() {
+            handler: function () {
                 $el.removeClass('inview-showup');
                 var showupClasses = $el.data('inviewShowup');
-                if( showupClasses ){
+                if (showupClasses) {
                     $el.addClass(showupClasses);
                 }
                 this.destroy();
             },
-            offset : '100%',
-            group : 'inview'
+            offset: '100%',
+            group: 'inview'
         });
     });
 
     // Shuffle
-    $('.shuffle-js').each(function(i, el){
+    $('.shuffle-js').each(function (i, el) {
         var $el = $(el),
             $shuffle = $(el).find('.shuffle-items'),
             shuffleInstance = new Shuffle($shuffle[0], {
                 itemSelector: '.shuffle-item'
             }),
             $filters = $el.find("[data-filter]")
-        ;
-        $filters.on('click', function(e){
+            ;
+        $filters.on('click', function (e) {
             e.preventDefault();
             $el.find('.shuffle-empty').css('display', 'none');
             var filter,
                 $filter = $(this)
-            ;
-            try{
+                ;
+            try {
                 filter = JSON.parse($filter.data('filter'));
-            }catch(exc){
+            } catch (exc) {
                 filter = $filter.data('filter');
             }
             $filters.removeClass('active');
@@ -308,47 +316,47 @@ initMap = false;
         });
         shuffleInstance.on(Shuffle.EventType.LAYOUT, function () {
             $(window).trigger('resize');
-            $el.find('.shuffle-empty').css('display', shuffleInstance.visibleItems ? 'none' : 'block' );
+            $el.find('.shuffle-empty').css('display', shuffleInstance.visibleItems ? 'none' : 'block');
         });
     });
 
     // Range slider
     var slDataOptions = ['min', 'max'],
-        setValue = function($list, val){
-            $list.each(function(i, el){
+        setValue = function ($list, val) {
+            $list.each(function (i, el) {
                 var $el = $(el);
-                if( $el.is('input, textarea, select') ){
+                if ($el.is('input, textarea, select')) {
                     $el.val(val);
-                }else{
+                } else {
                     $el.html(val);
                 }
             });
         }
-    ;
-    $('[data-ui-range-slider]').each(function(i, el){
+        ;
+    $('[data-ui-range-slider]').each(function (i, el) {
         var $el = $(el),
             $slider = $el.find('.slider-container'),
             $from = $el.find('[data-slider-from]'),
             $to = $el.find('[data-slider-to]'),
             data = $el.data(),
             options = {
-                range : true,
-                values : [
+                range: true,
+                values: [
                     $from.filter('input').first().val() || data.from || data.min || 0,
                     $to.filter('input').first().val() || data.to || data.max || 0
                 ],
-                create : function() {
+                create: function () {
                     setValue($from, options.values[0]);
                     setValue($to, options.values[1]);
                 },
-                slide : function( event, ui ) {
+                slide: function (event, ui) {
                     setValue($from, ui.values[0]);
                     setValue($to, ui.values[1]);
                 }
             }
-        ;
+            ;
         for (var key = 0; key < slDataOptions.length; key++) {
-            if( data.hasOwnProperty(slDataOptions[key]) ){
+            if (data.hasOwnProperty(slDataOptions[key])) {
                 options[slDataOptions[key]] = data[slDataOptions[key]];
             }
         }
@@ -356,39 +364,39 @@ initMap = false;
     });
 
     // Preview image / Product images preview
-    $('[data-preview-image]').each(function(i, el){
+    $('[data-preview-image]').each(function (i, el) {
         var $container = $(el),
             $current = $([]),
             $clone = $([]),
             name = $container.data('previewImage') || ''
-        ;
-        $('[data-preview-image-source="' + name + '"]').on('mouseenter.previewImage', function(){
+            ;
+        $('[data-preview-image-source="' + name + '"]').on('mouseenter.previewImage', function () {
             var $source = $(this);
-            if( $current.is($source) ){
+            if ($current.is($source)) {
                 return;
             }
-            $clone.clearQueue().fadeOut(500, function(){
+            $clone.clearQueue().fadeOut(500, function () {
                 $(this).remove();
             });
             $current = $source;
             $clone = $source.clone(true, true).removeClass().off('.previewImage').css({
-                'display' : 'none',
-                'transition' : 'none'
+                'display': 'none',
+                'transition': 'none'
             }).appendTo($container).fadeIn(500);
         }).first().triggerHandler('mouseenter');
     });
 
     // Scroll Top
-    var checkScroll = function(){
-        if( $(window).scrollTop() > 0 ){
+    var checkScroll = function () {
+        if ($(window).scrollTop() > 0) {
             $('.scroll-top').removeClass('disabled');
-        }else{
+        } else {
             $('.scroll-top').addClass('disabled');
         }
     };
     checkScroll();
     $(window).on('scroll resize orientationchange focus', checkScroll);
-    $('.scroll-top').on('click', function(e){
+    $('.scroll-top').on('click', function (e) {
         e.preventDefault();
         $('html, body').animate({
             scrollTop: 0
@@ -396,17 +404,17 @@ initMap = false;
     });
 
     // Show/hide categories
-    $('ul.categories-list > li .open-sub-link').on('click', function(e){
+    $('ul.categories-list > li .open-sub-link').on('click', function (e) {
         e.preventDefault();
         var $el = $(this),
             $current = $el.closest('li').toggleClass('active'),
             $ignore = $current.hasClass('active') ? $current : $([])
-        ;
+            ;
         $current.closest('ul').find('> li.active').not($ignore).removeClass('active');
     });
 
     /* Google Maps */
-    initMap = function (){
+    initMap = function () {
         // Create a new StyledMapType object, passing it an array of styles,
         // and the name to be displayed on the map type control.
         var styledMapType = new google.maps.StyledMapType(
@@ -414,200 +422,200 @@ initMap = false;
                 {
                     "elementType": "geometry",
                     "stylers": [
-                    {
-                        "color": "#f5f5f5"
-                    }
+                        {
+                            "color": "#f5f5f5"
+                        }
                     ]
                 },
                 {
                     "elementType": "labels.icon",
                     "stylers": [
-                    {
-                        "visibility": "off"
-                    }
+                        {
+                            "visibility": "off"
+                        }
                     ]
                 },
                 {
                     "elementType": "labels.text.fill",
                     "stylers": [
-                    {
-                        "color": "#616161"
-                    }
+                        {
+                            "color": "#616161"
+                        }
                     ]
                 },
                 {
                     "elementType": "labels.text.stroke",
                     "stylers": [
-                    {
-                        "color": "#f5f5f5"
-                    }
+                        {
+                            "color": "#f5f5f5"
+                        }
                     ]
                 },
                 {
                     "featureType": "administrative.land_parcel",
                     "elementType": "labels.text.fill",
                     "stylers": [
-                    {
-                        "color": "#bdbdbd"
-                    }
+                        {
+                            "color": "#bdbdbd"
+                        }
                     ]
                 },
                 {
                     "featureType": "poi",
                     "elementType": "geometry",
                     "stylers": [
-                    {
-                        "color": "#eeeeee"
-                    }
+                        {
+                            "color": "#eeeeee"
+                        }
                     ]
                 },
                 {
                     "featureType": "poi",
                     "elementType": "labels.text.fill",
                     "stylers": [
-                    {
-                        "color": "#757575"
-                    }
+                        {
+                            "color": "#757575"
+                        }
                     ]
                 },
                 {
                     "featureType": "poi.park",
                     "elementType": "geometry",
                     "stylers": [
-                    {
-                        "color": "#e5e5e5"
-                    }
+                        {
+                            "color": "#e5e5e5"
+                        }
                     ]
                 },
                 {
                     "featureType": "poi.park",
                     "elementType": "labels.text.fill",
                     "stylers": [
-                    {
-                        "color": "#9e9e9e"
-                    }
+                        {
+                            "color": "#9e9e9e"
+                        }
                     ]
                 },
                 {
                     "featureType": "road",
                     "elementType": "geometry",
                     "stylers": [
-                    {
-                        "color": "#ffffff"
-                    }
+                        {
+                            "color": "#ffffff"
+                        }
                     ]
                 },
                 {
                     "featureType": "road.arterial",
                     "elementType": "labels.text.fill",
                     "stylers": [
-                    {
-                        "color": "#757575"
-                    }
+                        {
+                            "color": "#757575"
+                        }
                     ]
                 },
                 {
                     "featureType": "road.highway",
                     "elementType": "geometry",
                     "stylers": [
-                    {
-                        "color": "#dadada"
-                    }
+                        {
+                            "color": "#dadada"
+                        }
                     ]
                 },
                 {
                     "featureType": "road.highway",
                     "elementType": "labels.text.fill",
                     "stylers": [
-                    {
-                        "color": "#616161"
-                    }
+                        {
+                            "color": "#616161"
+                        }
                     ]
                 },
                 {
                     "featureType": "road.local",
                     "elementType": "labels.text.fill",
                     "stylers": [
-                    {
-                        "color": "#9e9e9e"
-                    }
+                        {
+                            "color": "#9e9e9e"
+                        }
                     ]
                 },
                 {
                     "featureType": "transit.line",
                     "elementType": "geometry",
                     "stylers": [
-                    {
-                        "color": "#e5e5e5"
-                    }
+                        {
+                            "color": "#e5e5e5"
+                        }
                     ]
                 },
                 {
                     "featureType": "transit.station",
                     "elementType": "geometry",
                     "stylers": [
-                    {
-                        "color": "#eeeeee"
-                    }
+                        {
+                            "color": "#eeeeee"
+                        }
                     ]
                 },
                 {
                     "featureType": "water",
                     "elementType": "geometry",
                     "stylers": [
-                    {
-                        "color": "#c9c9c9"
-                    }
+                        {
+                            "color": "#c9c9c9"
+                        }
                     ]
                 },
                 {
                     "featureType": "water",
                     "elementType": "labels.text.fill",
                     "stylers": [
-                    {
-                        "color": "#9e9e9e"
-                    }
+                        {
+                            "color": "#9e9e9e"
+                        }
                     ]
                 }
             ],
-            {name: 'Styled Map'});
+            { name: 'Styled Map' });
 
         // Create a map object, and include the MapTypeId to add
         // to the map type control.
-        $('.gmap').each(function(i, el){
+        $('.gmap').each(function (i, el) {
             var $el = $(el),
                 data = $el.data(),
-                mark = {lat: data.lat, lng: data.lng},
-                center = {lat: data.centerLat || (mark.lat - 0.002), lng: data.centerLng || (mark.lng + 0.003)},
+                mark = { lat: data.lat, lng: data.lng },
+                center = { lat: data.centerLat || (mark.lat - 0.002), lng: data.centerLng || (mark.lng + 0.003) },
                 map = new google.maps.Map(el, {
                     center: center, // map center position
                     zoom: data.zoom || 15,
                     scrollwheel: false,
                     zoomControl: true,
                     zoomControlOptions: {
-                      position: google.maps.ControlPosition.LEFT_CENTER
+                        position: google.maps.ControlPosition.LEFT_CENTER
                     },
                     streetViewControl: true,
                     streetViewControlOptions: {
-                      position: google.maps.ControlPosition.LEFT_BOTTOM
+                        position: google.maps.ControlPosition.LEFT_BOTTOM
                     },
                     mapTypeControlOptions: {
                         mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain', 'styled_map']
                     }
                 })
-            ;
+                ;
 
             new google.maps.Marker({
-              position: mark,
-              map: map,
-              icon: data.marker || "./images/parts/map-marker.png"
+                position: mark,
+                map: map,
+                icon: data.marker || "./images/parts/map-marker.png"
             });
 
             // Associate the styled map with the MapTypeId and set it to display.
             map.mapTypes.set('styled_map', styledMapType);
             map.setMapTypeId('styled_map');
             // Center map on resize
-            $(window).on('resize', function(){
+            $(window).on('resize', function () {
                 google.maps.event.trigger(map, 'resize');
                 map.setCenter(center);
             });
@@ -615,30 +623,30 @@ initMap = false;
     };
 
     /* Chosen - custeom selects*/
-    $('.chosen-field select.field-control').each(function(i, el){
+    $('.chosen-field select.field-control').each(function (i, el) {
         var $field = $(el);
         $field.chosen({
-            width : '100%',
-            disable_search_threshold : 10
+            width: '100%',
+            disable_search_threshold: 10
         });
     });
 
     /* User tickets */
-    $('.user-tickets .user-ticket .item-header').on('click', function(e){
+    $('.user-tickets .user-ticket .item-header').on('click', function (e) {
         e.preventDefault();
         var $ticket = $(this).closest('.user-ticket'),
             $other = $(this).closest('.user-tickets').find('.user-ticket').not($ticket)
-        ;
+            ;
         $ticket.toggleClass('active');
         $other.removeClass('active');
     });
 
     /* User orders */
-    $('.user-orders .user-order .item-header').on('click', function(e){
+    $('.user-orders .user-order .item-header').on('click', function (e) {
         e.preventDefault();
         var $order = $(this).closest('.user-order'),
             $other = $(this).closest('.user-orders').find('.user-order').not($order)
-        ;
+            ;
         $order.toggleClass('active');
         $other.removeClass('active');
     });
